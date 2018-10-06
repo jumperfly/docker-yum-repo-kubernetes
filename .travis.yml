@@ -4,22 +4,21 @@ services:
 script:
   - |
     if [ "$TRAVIS_BRANCH" == "master" ]; then
-      docker build . -t jumperfly/yum-repo-docker:commit-${TRAVIS_COMMIT:0:7}
+      docker build . -t jumperfly/yum-repo-kubernetes:commit-${TRAVIS_COMMIT:0:7}
     fi
   - |
     if [ -n "$TRAVIS_TAG" ]; then
-      docker pull jumperfly/yum-repo-docker:commit-${TRAVIS_COMMIT:0:7}
-      docker tag jumperfly/yum-repo-docker:commit-${TRAVIS_COMMIT:0:7} jumperfly/yum-repo-docker:$TRAVIS_TAG
+      docker pull jumperfly/yum-repo-kubernetes:commit-${TRAVIS_COMMIT:0:7}
+      docker tag jumperfly/yum-repo-kubernetes:commit-${TRAVIS_COMMIT:0:7} jumperfly/yum-repo-kubernetes:$TRAVIS_TAG
     fi
 
 after_script:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - |
     if [ "$TRAVIS_BRANCH" == "master" ]; then
-      docker push jumperfly/yum-repo-docker:$TRAVIS_BRANCH-${TRAVIS_COMMIT:0:7}
+      docker push jumperfly/yum-repo-kubernetes:$TRAVIS_BRANCH-${TRAVIS_COMMIT:0:7}
     fi
   - |
     if [ -n "$TRAVIS_TAG" ];
-      then docker push jumperfly/yum-repo-docker:$TRAVIS_TAG
+      then docker push jumperfly/yum-repo-kubernetes:$TRAVIS_TAG
     fi
-
