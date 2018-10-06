@@ -1,0 +1,13 @@
+services:
+  - docker
+
+branches:
+  only:
+    - master
+
+script:
+  - docker build . -t jumperfly/yum-repo-kubernetes:$TRAVIS_BRANCH-${TRAVIS_COMMIT:0:7}
+
+after_script:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker push jumperfly/yum-repo-kubernetes:$TRAVIS_BRANCH-${TRAVIS_COMMIT:0:7}
